@@ -1,0 +1,29 @@
+import cx_Oracle
+
+# Set Oracle Client library path (adjust this to your actual installation path)
+cx_Oracle.init_oracle_client(lib_dir=r"C:\oib\instantclient_19_9")
+
+try:
+    # Establish a connection
+    conn = cx_Oracle.connect('apps01', 'apps', 'localhost:1521/XE')
+    # Create a cursor
+    cursor = conn.cursor()
+
+    # Execute a query to insert data into the table
+    query = "INSERT INTO TEST (A) VALUES (10)"
+    cursor.execute(query)
+
+    # Commit the transaction to make the changes permanent
+    conn.commit()
+
+    # Fetch and print results
+    select_query = "SELECT * FROM TEST"
+    cursor.execute(select_query)
+    for row in cursor:
+        print(row)
+
+    # Close cursor and connection
+    cursor.close()
+    conn.close()
+except cx_Oracle.Error as error:
+    print("Database error:", error)
